@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.FragmentMainBinding
+import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,13 +32,17 @@ class MainFragment : Fragment() {
         val pagingAdapter = MainPagingAdapter()
         val recyclerView = binding.mainRv
 
-        recyclerView.adapter = pagingAdapter
+        recyclerView.adapter = pagingAdapter.withLoadStateHeaderAndFooter(
+            header = ResultsLoadStateAdapter { pagingAdapter.retry() },
+            footer = ResultsLoadStateAdapter { pagingAdapter.retry() }
+        )
 
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
-            //binding.photosEmptyIv.visibility = View.GONE
+            binding.mainPb.visibility = View.GONE
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 
         viewModel.getComics()
+        binding.mainPb.visibility = View.VISIBLE
     }
 }
