@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/comic_cover"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="#BD6565" />
+
+            <TextView
+                android:id="@+id/comic_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/comic_title"
+                android:textSize="@dimen/comic_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/comic_cover"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Star Wars #7" />
+
+            <TextView
+                android:id="@+id/comic_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/comic_author"
+                android:textSize="@dimen/comic_author_text_size"
+                app:layout_constraintStart_toStartOf="@+id/comic_title"
+                app:layout_constraintTop_toBottomOf="@+id/comic_title"
+                tools:text="written by Mariko Tamaki" />
+
+            <TextView
+                android:id="@+id/comic_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/comic_description"
+                android:textSize="@dimen/comic_description_text_size"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/comic_author"
+                app:layout_constraintTop_toBottomOf="@+id/comic_author"
+                tools:text="Jen Walters used to fight for justice in the courtroom as a lawyer and outside of it as the super hero known as She-Hulk. But after the events of Civil War, Jen’s Hulk persona has changed." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
