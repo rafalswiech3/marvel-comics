@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--    Text-->
     <dimen name="comic_title_text_size">16sp</dimen>
     <dimen name="comic_author_text_size">10sp</dimen>
     <dimen name="comic_description_text_size">14sp</dimen>
     <dimen name="comic_search_info_text_size">16sp</dimen>
+    <dimen name="comic_details_title_text_size">20sp</dimen>
+    <dimen name="comic_details_author_text_size">14sp</dimen>
+    <dimen name="comic_details_description_text_size">18sp</dimen>
+<!--    Other-->
     <dimen name="card_view_margins">16dp</dimen>
 </resources>

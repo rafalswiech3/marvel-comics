@@ -15,15 +15,17 @@ import androidx.paging.PagingSource
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.FragmentMainBinding
 import com.rafal.marvelcomics.databinding.FragmentSearchBinding
+import com.rafal.marvelcomics.model.MarvelComic
 import com.rafal.marvelcomics.screens.home.HomeFragmentDirections
 import com.rafal.marvelcomics.screens.main.MainPagingAdapter
+import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
 import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -48,9 +50,9 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pagingAdapter = MainPagingAdapter()
+        val pagingAdapter = MainPagingAdapter(this)
         val recyclerView = binding.searchRv
-        
+
         recyclerView.adapter = pagingAdapter.apply {
             withLoadStateHeaderAndFooter(
                 header = ResultsLoadStateAdapter { pagingAdapter.retry() },
@@ -111,6 +113,11 @@ class SearchFragment : Fragment() {
     private fun setSearchInfoEmptyText() {
         binding.searchInfoTv.text = "${getString(R.string.comic_search_no_comics_begin)} " +
                 "\"$searchQuery\" ${getString(R.string.comic_search_no_comics_end)}"
+    }
+
+    override fun onComicItemClick(comic: MarvelComic) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(comic = comic)
+        findNavController().navigate(action)
     }
 
 }

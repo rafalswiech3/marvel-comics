@@ -14,4 +14,5 @@
     <string name="comic_search_start_typing">Start typing to find particular comics.</string>
     <string name="comic_search_no_comics_begin">There is not comic book</string>
     <string name="comic_search_no_comics_end">in our library. Check the spelling and try again.</string>
+    <string name="find_out_more">Find out more</string>
 </resources>

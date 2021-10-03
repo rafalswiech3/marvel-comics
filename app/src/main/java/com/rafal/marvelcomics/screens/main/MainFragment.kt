@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.FragmentMainBinding
+import com.rafal.marvelcomics.model.MarvelComic
+import com.rafal.marvelcomics.screens.home.HomeFragmentDirections
+import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
 import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), IOnRecyclerViewItemClick {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -31,7 +35,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pagingAdapter = MainPagingAdapter()
+        val pagingAdapter = MainPagingAdapter(this)
         val recyclerView = binding.mainRv
 
         recyclerView.adapter = pagingAdapter.apply {
@@ -49,6 +53,17 @@ class MainFragment : Fragment() {
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 
-        viewModel.getComics()
+        viewModel.apply {
+            if(!comicsLoaded) {
+                getComics()
+                comicsLoaded = true
+            }
+        }
+    }
+
+    override fun onComicItemClick(comic: MarvelComic) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(comic = comic)
+        findNavController().navigate(action)
+
     }
 }

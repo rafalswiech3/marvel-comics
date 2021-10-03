@@ -9,7 +9,11 @@
         android:id="@+id/detailsFragment"
         android:name="com.rafal.marvelcomics.screens.details.DetailsFragment"
         android:label="@string/details_fragment_label"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="comic"
+            app:argType="com.rafal.marvelcomics.model.MarvelComic" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.rafal.marvelcomics.screens.home.HomeFragment"

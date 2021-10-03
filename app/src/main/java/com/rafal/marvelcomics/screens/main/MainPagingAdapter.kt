@@ -1,7 +1,6 @@
 package com.rafal.marvelcomics.screens.main
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -20,11 +18,12 @@ import com.bumptech.glide.request.target.Target
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.ComicsItemBinding
 import com.rafal.marvelcomics.model.MarvelComic
+import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
 
 class MainPagingAdapter(
-
+    private val itemClickListener: IOnRecyclerViewItemClick
 ) : PagingDataAdapter<MarvelComic, MainPagingAdapter.ComicViewHolder>(COMIC_COMPARATOR) {
-    class ComicViewHolder(private val binding: ComicsItemBinding) :
+    inner class ComicViewHolder(private val binding: ComicsItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comic: MarvelComic) {
@@ -71,6 +70,10 @@ class MainPagingAdapter(
 
                 comicTitle.text = comic.title
                 comicDescription.text = comic.description
+
+                root.setOnClickListener {
+                    itemClickListener.onComicItemClick(comic)
+                }
             }
         }
     }

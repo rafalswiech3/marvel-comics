@@ -20,6 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repo: MainRepository
 ) : ViewModel() {
+    var comicsLoaded = false
     private val _comicsLiveData: MutableLiveData<PagingData<MarvelComic>> =
         MutableLiveData()
     val comicsLiveData: LiveData<PagingData<MarvelComic>> =
