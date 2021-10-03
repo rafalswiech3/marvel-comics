@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.FragmentMainBinding
 import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
@@ -29,22 +31,24 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mainPb.visibility = View.VISIBLE
-        
         val pagingAdapter = MainPagingAdapter()
         val recyclerView = binding.mainRv
 
-        recyclerView.adapter = pagingAdapter.withLoadStateHeaderAndFooter(
-            header = ResultsLoadStateAdapter { pagingAdapter.retry() },
-            footer = ResultsLoadStateAdapter { pagingAdapter.retry() }
-        )
+        recyclerView.adapter = pagingAdapter.apply {
+            withLoadStateHeaderAndFooter(
+                header = ResultsLoadStateAdapter { pagingAdapter.retry() },
+                footer = ResultsLoadStateAdapter { pagingAdapter.retry() }
+            )
+
+            addLoadStateListener { loadState ->
+                binding.mainPb.isVisible = loadState.source.refresh is LoadState.Loading
+            }
+        }
 
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-            binding.mainPb.visibility = View.GONE
         }
 
         viewModel.getComics()
-
     }
 }

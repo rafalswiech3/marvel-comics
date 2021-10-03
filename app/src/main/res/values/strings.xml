@@ -11,4 +11,7 @@
     <string name="main_fragment_label">Marvel Comics</string>
     <string name="search_fragment_label">Search comics</string>
     <string name="details_fragment_label">Details</string>
+    <string name="comic_search_start_typing">Start typing to find particular comics.</string>
+    <string name="comic_search_no_comics_begin">There is not comic book</string>
+    <string name="comic_search_no_comics_end">in our library. Check the spelling and try again.</string>
 </resources>

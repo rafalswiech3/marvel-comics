@@ -3,5 +3,6 @@
     <dimen name="comic_title_text_size">16sp</dimen>
     <dimen name="comic_author_text_size">10sp</dimen>
     <dimen name="comic_description_text_size">14sp</dimen>
+    <dimen name="comic_search_info_text_size">16sp</dimen>
     <dimen name="card_view_margins">16dp</dimen>
 </resources>
