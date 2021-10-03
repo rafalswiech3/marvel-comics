@@ -18,7 +18,7 @@ class MainPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MarvelComic> {
-        val position = params.key ?: 1
+        val position = params.key ?: 0
 
         return try {
             val response = api.getComics(
@@ -31,7 +31,7 @@ class MainPagingSource(
             val body = response.body()!!
             LoadResult.Page(
                 data = body.data.results,
-                prevKey = if (position == 1) null else position - 1,
+                prevKey = if (position == 0) null else position - 1,
                 nextKey = if (body.data.results.size < RESULTS_PER_PAGE) null else position + 1
             )
         } catch (exception: IOException) {

@@ -2,6 +2,7 @@ package com.rafal.marvelcomics
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphNavigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,32 +25,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.mainFragment,
-                R.id.searchFragment
-            )
-        )
 
+        appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.bottomNavigation.setupWithNavController(navController)
-
-        binding.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> {
-                    navController.navigate(R.id.action_global_mainFragment)
-                    true
-                }
-                R.id.search -> {
-                    navController.navigate(R.id.action_global_searchFragment)
-                    true
-                }
-                else -> false
-            }
-        }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

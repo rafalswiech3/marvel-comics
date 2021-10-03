@@ -6,4 +6,9 @@
     <string name="written_by">written by</string>
     <string name="description_temp">Jen Walters used to fight for justice in the courtroom as a lawyer and outside of it as the super hero known as She-Hulk. But after the events of Civil War, Jen’s Hulk persona has changed.</string>
     <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="search_query">Search for a comic book</string>
+    <string name="main_fragment_label">Marvel Comics</string>
+    <string name="search_fragment_label">Search comics</string>
+    <string name="details_fragment_label">Details</string>
 </resources>

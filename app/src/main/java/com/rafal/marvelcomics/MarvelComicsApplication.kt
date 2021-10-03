@@ -1,4 +1,4 @@
-package com.rafal
+package com.rafal.marvelcomics
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

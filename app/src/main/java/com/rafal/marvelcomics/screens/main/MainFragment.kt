@@ -29,6 +29,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.mainPb.visibility = View.VISIBLE
+        
         val pagingAdapter = MainPagingAdapter()
         val recyclerView = binding.mainRv
 
@@ -38,11 +40,11 @@ class MainFragment : Fragment() {
         )
 
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
-            binding.mainPb.visibility = View.GONE
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+            binding.mainPb.visibility = View.GONE
         }
 
         viewModel.getComics()
-        binding.mainPb.visibility = View.VISIBLE
+
     }
 }
