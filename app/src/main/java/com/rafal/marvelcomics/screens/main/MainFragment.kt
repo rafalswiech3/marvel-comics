@@ -45,20 +45,22 @@ class MainFragment : Fragment(), IOnRecyclerViewItemClick {
             )
 
             addLoadStateListener { loadState ->
-                binding.mainPb.isVisible = loadState.source.refresh is LoadState.Loading
+                binding.apply {
+                    mainPb.isVisible = loadState.source.refresh is LoadState.Loading
+                    mainRetryBtn.isVisible = loadState.source.refresh is LoadState.Error
+                }
             }
+        }
+
+        binding.mainRetryBtn.setOnClickListener {
+            pagingAdapter.retry()
         }
 
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 
-        viewModel.apply {
-            if(!comicsLoaded) {
-                getComics()
-                comicsLoaded = true
-            }
-        }
+        viewModel.loadComicsOnAppLaunch()
     }
 
     override fun onComicItemClick(comic: MarvelComic) {

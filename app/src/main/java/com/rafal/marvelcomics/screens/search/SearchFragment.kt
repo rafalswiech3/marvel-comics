@@ -69,7 +69,12 @@ class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
                 }
                 binding.searchInfoGroup.isVisible = isListEmpty
                 binding.searchPb.isVisible = loadState.source.refresh is LoadState.Loading
+                binding.searchRetryBtn.isVisible = loadState.source.refresh is LoadState.Error
             }
+        }
+
+        binding.searchRetryBtn.setOnClickListener {
+            pagingAdapter.retry()
         }
 
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
