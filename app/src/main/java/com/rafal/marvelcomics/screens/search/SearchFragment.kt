@@ -1,32 +1,26 @@
 package com.rafal.marvelcomics.screens.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import com.rafal.marvelcomics.R
-import com.rafal.marvelcomics.databinding.FragmentMainBinding
 import com.rafal.marvelcomics.databinding.FragmentSearchBinding
 import com.rafal.marvelcomics.model.MarvelComic
 import com.rafal.marvelcomics.screens.home.HomeFragmentDirections
-import com.rafal.marvelcomics.screens.main.MainPagingAdapter
+import com.rafal.marvelcomics.screens.main.SearchPagingSource
+import com.rafal.marvelcomics.screens.shared.MainPagingAdapter
 import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
 import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
-
+    private lateinit var pagingAdapter: MainPagingAdapter
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -50,7 +44,13 @@ class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pagingAdapter = MainPagingAdapter(this)
+        prepareRecyclerView()
+        setRetryButtonOnClickListener()
+        observeViewModelComicsLiveData()
+    }
+
+    private fun prepareRecyclerView() {
+        pagingAdapter = MainPagingAdapter(this)
         val recyclerView = binding.searchRv
 
         recyclerView.adapter = pagingAdapter.apply {
@@ -72,23 +72,18 @@ class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
                 binding.searchRetryBtn.isVisible = loadState.source.refresh is LoadState.Error
             }
         }
+    }
 
+    private fun setRetryButtonOnClickListener() {
         binding.searchRetryBtn.setOnClickListener {
             pagingAdapter.retry()
         }
+    }
 
+    private fun observeViewModelComicsLiveData() {
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
-
-        val searchView = menu.findItem(R.id.action_search_search_fragment).actionView as SearchView
-        searchView.queryHint = getString(R.string.search_query)
-        setSearchViewOnQueryTextListener(searchView)
     }
 
     private fun setSearchViewOnQueryTextListener(view: SearchView) {
@@ -118,6 +113,14 @@ class SearchFragment : Fragment(), IOnRecyclerViewItemClick {
     private fun setSearchInfoEmptyText() {
         binding.searchInfoTv.text = "${getString(R.string.comic_search_no_comics_begin)} " +
                 "\"$searchQuery\" ${getString(R.string.comic_search_no_comics_end)}"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+
+        val searchView = menu.findItem(R.id.action_search_search_fragment).actionView as SearchView
+        searchView.queryHint = getString(R.string.search_query)
+        setSearchViewOnQueryTextListener(searchView)
     }
 
     override fun onComicItemClick(comic: MarvelComic) {

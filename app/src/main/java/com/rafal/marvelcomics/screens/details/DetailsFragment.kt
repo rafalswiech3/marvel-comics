@@ -42,33 +42,18 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        prepareBottomSheet()
+        loadCover()
+        loadComicTitle()
+        loadComicAuthors()
+        loadComicDescription()
+        setMoreDetailsButtonClickListener()
+    }
+
+    private fun prepareBottomSheet() {
         BottomSheetBehavior.from(binding.detailsBottomSheet).apply {
             peekHeight = 500
             state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-
-        loadCover()
-
-        binding.apply {
-            detailsComicTitle.text = args.comic.title
-            args.comic.creators.items.forEach { creator ->
-                var comma = ", "
-                if(creator == args.comic.creators.items.last()) {
-                   comma = ""
-                }
-                detailsComicAuthor.text = "${detailsComicAuthor.text}${creator.name}$comma"
-            }
-
-            detailsComicDescription.text = args.comic.description
-
-            detailsBtn.setOnClickListener {
-                val url = args.comic.urls.firstOrNull {
-                    it.type == "detail"
-                }?.url
-                url?.let {
-                    openWebPage(it)
-                }
-            }
         }
     }
 
@@ -79,10 +64,39 @@ class DetailsFragment : Fragment() {
             .into(binding.detailsIv)
     }
 
-    fun openWebPage(url: String) {
+    private fun loadComicTitle() {
+        binding.detailsComicTitle.text = args.comic.title
+    }
+
+    private fun loadComicAuthors() {
+        args.comic.creators.items.forEach { creator ->
+            var comma = ", "
+            if (creator == args.comic.creators.items.last()) {
+                comma = ""
+            }
+            binding.detailsComicAuthor.text =
+                "${binding.detailsComicAuthor.text}${creator.name}$comma"
+        }
+    }
+
+    private fun loadComicDescription() {
+        binding.detailsComicDescription.text = args.comic.description
+    }
+
+    private fun setMoreDetailsButtonClickListener() {
+        binding.detailsBtn.setOnClickListener {
+            val url = args.comic.urls.firstOrNull {
+                it.type == "detail"
+            }?.url
+            url?.let {
+                openWebPage(it)
+            }
+        }
+    }
+
+    private fun openWebPage(url: String) {
         val webpage: Uri = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         startActivity(intent)
     }
-
 }

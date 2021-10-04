@@ -9,11 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.FragmentMainBinding
 import com.rafal.marvelcomics.model.MarvelComic
 import com.rafal.marvelcomics.screens.home.HomeFragmentDirections
 import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
+import com.rafal.marvelcomics.screens.shared.MainPagingAdapter
 import com.rafal.marvelcomics.screens.shared.ResultsLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +23,8 @@ class MainFragment : Fragment(), IOnRecyclerViewItemClick {
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by viewModels()
+
+    private lateinit var pagingAdapter: MainPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,14 @@ class MainFragment : Fragment(), IOnRecyclerViewItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pagingAdapter = MainPagingAdapter(this)
+        prepareRecyclerView()
+        setRetryButtonClickListener()
+        observeViewModelComicLiveData()
+        loadComicsOnAppLaunch()
+    }
+
+    private fun prepareRecyclerView() {
+        pagingAdapter = MainPagingAdapter(this)
         val recyclerView = binding.mainRv
 
         recyclerView.adapter = pagingAdapter.apply {
@@ -51,15 +60,21 @@ class MainFragment : Fragment(), IOnRecyclerViewItemClick {
                 }
             }
         }
+    }
 
+    private fun setRetryButtonClickListener() {
         binding.mainRetryBtn.setOnClickListener {
             pagingAdapter.retry()
         }
+    }
 
+    private fun observeViewModelComicLiveData() {
         viewModel.comicsLiveData.observe(viewLifecycleOwner) {
             pagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
+    }
 
+    private fun loadComicsOnAppLaunch() {
         viewModel.loadComicsOnAppLaunch()
     }
 

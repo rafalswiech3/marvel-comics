@@ -1,4 +1,4 @@
-package com.rafal.marvelcomics.screens.main
+package com.rafal.marvelcomics.screens.shared
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -18,7 +18,6 @@ import com.bumptech.glide.request.target.Target
 import com.rafal.marvelcomics.R
 import com.rafal.marvelcomics.databinding.ComicsItemBinding
 import com.rafal.marvelcomics.model.MarvelComic
-import com.rafal.marvelcomics.screens.shared.IOnRecyclerViewItemClick
 
 class MainPagingAdapter(
     private val itemClickListener: IOnRecyclerViewItemClick

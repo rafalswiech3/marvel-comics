@@ -29,6 +29,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        prepareViewPager()
+        registerBottomNavigationBarListener()
+    }
+
+    private fun prepareViewPager() {
         binding.viewPager.also {
             it.adapter = HomeFragmentAdapter(this)
             it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -42,7 +47,6 @@ class HomeFragment : Fragment() {
                 }
             })
         }
-        registerBottomNavigationBarListener()
     }
 
     private fun registerBottomNavigationBarListener() {

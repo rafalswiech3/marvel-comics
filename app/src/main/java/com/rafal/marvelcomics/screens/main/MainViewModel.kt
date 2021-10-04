@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     val comicsLiveData: LiveData<PagingData<MarvelComic>> =
         _comicsLiveData
 
-    fun getComics() {
+    private fun getComics() {
         viewModelScope.launch(Dispatchers.IO) {
             repo.getAllComics().cachedIn(viewModelScope).collect {
                 _comicsLiveData.postValue(it)
