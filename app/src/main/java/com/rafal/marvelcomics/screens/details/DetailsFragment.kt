@@ -1,6 +1,8 @@
 package com.rafal.marvelcomics.screens.details
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -58,38 +60,29 @@ class DetailsFragment : Fragment() {
             }
 
             detailsComicDescription.text = args.comic.description
+
+            detailsBtn.setOnClickListener {
+                val url = args.comic.urls.firstOrNull {
+                    it.type == "detail"
+                }?.url
+                url?.let {
+                    openWebPage(it)
+                }
+            }
         }
     }
 
     private fun loadCover() {
         Glide.with(requireContext())
             .load("${args.comic.thumbnail.path}.${args.comic.thumbnail.extension}")
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-//                    comicPb.visibility = View.GONE
-//                    comicImageError.visibility = View.VISIBLE
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-//                    comicPb.visibility = View.GONE
-//                    comicImageError.visibility = View.GONE
-                    return false
-                }
-            })
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.detailsIv)
+    }
+
+    fun openWebPage(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        startActivity(intent)
     }
 
 }

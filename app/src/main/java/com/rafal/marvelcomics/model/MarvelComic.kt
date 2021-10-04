@@ -9,13 +9,14 @@ data class MarvelComic(
     val title: String,
     val description: String,
     val thumbnail: MarvelComicThumbnail,
-    val creators: MarvelComicCreators
+    val creators: MarvelComicCreators,
+    val urls: List<MarvelComicUrls>
 ) : Parcelable {
     @Parcelize
     data class MarvelComicThumbnail(
         val path: String,
         val extension: String
-    ): Parcelable
+    ) : Parcelable
 
     @Parcelize
     data class MarvelComicCreators(
@@ -25,6 +26,12 @@ data class MarvelComic(
         @Parcelize
         data class MarvelComicCreator(
             val name: String
-        ):Parcelable
+        ) : Parcelable
     }
+
+    @Parcelize
+    data class MarvelComicUrls(
+        val type: String,
+        val url: String
+    ) : Parcelable
 }
